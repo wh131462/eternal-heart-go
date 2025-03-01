@@ -16,6 +16,40 @@ docker run -d -p 2341:2341 --name eh-go-server eh-go-server:latest
 curl http://localhost:2341/wx
 ```
 
+打包,构建本地镜像并打标签:
+```shell
+docker build -t eh-go-server:latest .
+```
+
+保存到tar文件:
+
+```shell
+docker save -o eh-go-server.tar eh-go-server:latest
+```
+
+加载镜像(需要先上传到服务器):
+```shell
+docker load -i /path/to/eh-go-server.tar
+```
+运行即可:
+```shell
+docker run -d --name eh-go-server -p 2341:2341 eh-go-server:latest
+```
+
+### 多平台构建
+
+```shell
+# 启用 buildx 并创建多平台构建器
+docker buildx create --use --name multi-platform-builder
+
+# 安装跨平台模拟器（非必需，但推荐）
+docker run --privileged --rm tonistiigi/binfmt --install all
+
+# 构建并推送多架构镜像（AMD64 + ARM64）
+docker buildx build --platform linux/amd64,linux/arm64 -t eh-go-server:latest  .
+```
+
+
 ### optional
 标记镜像
 将本地镜像标记为 Docker Hub 上的镜像：

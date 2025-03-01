@@ -1,5 +1,9 @@
 # 使用官方 Go 镜像作为基础镜像
-FROM golang:1.20-alpine AS builder
+FROM golang:latest AS builder
+
+# 设置 Go 模块代理和私有库配置
+ENV GOPROXY=https://goproxy.cn,direct \
+    GOSUMDB=sum.golang.google.cn
 
 # 设置工作目录
 WORKDIR /workspace
