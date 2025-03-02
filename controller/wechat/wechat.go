@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"sort"
 	"strings"
@@ -59,7 +60,6 @@ func handleWxMessage(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid xml format"})
 		return
 	}
-
 	response := dispatchMessage(msg)
 	c.XML(http.StatusOK, response)
 }
@@ -87,32 +87,39 @@ func dispatchMessage(msg WxMessage) WxResponse {
 			FromUserName: msg.ToUserName,
 			CreateTime:   time.Now().Unix(),
 			MsgType:      "text",
-			Content:      "Unsupported message type",
+			Content:      "不支持此类消息,请检查消息!",
 		}
 	}
 }
 
-// 文本消息处理（保持不变）
+// 文本消息处理
 func handleTextMessage(msg WxMessage) WxResponse {
+	// 处理菜单选择
+	responseContent := handleMenuSelection(msg.FromUserName, msg.Content)
+	log.Println(responseContent)
 	return WxResponse{
 		ToUserName:   msg.FromUserName,
 		FromUserName: msg.ToUserName,
 		CreateTime:   time.Now().Unix(),
 		MsgType:      "text",
-		Content:      "You said: " + msg.Content,
+		Content:      responseContent,
 	}
 }
 
-// 事件消息处理（保持不变）
+// 事件消息处理
 func handleEventMessage(msg WxMessage) WxResponse {
 	var content string
 	switch msg.Event {
 	case "subscribe":
-		content = "Welcome! Thanks for subscribing."
+		// 发送欢迎消息和主菜单
+		session := getUserSession(msg.FromUserName)
+		content = "欢迎关注！\n\n" + generateMenuText(session.CurrentMenu)
 	case "unsubscribe":
-		content = "Goodbye! You have unsubscribed."
+		// 清理用户会话
+		delete(userSessions, msg.FromUserName)
+		content = "感谢使用，期待再次相见！"
 	default:
-		content = "Unsupported event type"
+		content = "暂不支持的事件类型"
 	}
 	return WxResponse{
 		ToUserName:   msg.FromUserName,
