@@ -8,12 +8,12 @@ docker build -t eh-go-server:latest .
 ```
 上传到服务端,执行:
 ```shell
-docker run -d -p 2341:2341 --name eh-go-server eh-go-server:latest
+docker run -d -p 9999:9999 --name eh-go-server eh-go-server:latest
 ```
 
 验证运行:
 ```shell
-curl http://localhost:2341/wx
+curl http://localhost:9999/wx
 ```
 
 打包,构建本地镜像并打标签:
@@ -33,7 +33,7 @@ docker load -i /path/to/eh-go-server.tar
 ```
 运行即可:
 ```shell
-docker run -d --name eh-go-server -p 2341:2341 eh-go-server:latest
+docker run -d --name eh-go-server -p 9999:9999 eh-go-server:latest
 ```
 
 ### 多平台构建
@@ -68,6 +68,6 @@ docker push your_dockerhub_username/eh-go-server:latest
 # 拉取镜像
 docker pull your_dockerhub_username/eh-go-server:latest
 # 运行容器
-docker run -d -p 2341:2341 --name eh-go-server your_dockerhub_username/eh-go-server:latest
+docker run -d -p 9999:9999 --name eh-go-server your_dockerhub_username/eh-go-server:latest
 ```
 
