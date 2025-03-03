@@ -3,6 +3,7 @@ module eh_go
 go 1.24
 
 require (
+	github.com/6tail/tyme4go v1.0.1
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	gorm.io/driver/mysql v1.5.7
@@ -11,6 +12,7 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/6tail/lunar-go v1.4.0 // indirect
 	github.com/bytedance/sonic v1.12.9 // indirect
 	github.com/bytedance/sonic/loader v0.2.3 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect

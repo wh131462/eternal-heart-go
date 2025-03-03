@@ -96,7 +96,8 @@ func dispatchMessage(msg WxMessage) WxResponse {
 func handleTextMessage(msg WxMessage) WxResponse {
 	// 处理菜单选择
 	responseContent := handleMenuSelection(msg.FromUserName, msg.Content)
-	log.Println(responseContent)
+	log.Printf("用户 %s 发送消息: %s, 响应: %s", msg.FromUserName, msg.Content, responseContent)
+	
 	return WxResponse{
 		ToUserName:   msg.FromUserName,
 		FromUserName: msg.ToUserName,
@@ -113,7 +114,7 @@ func handleEventMessage(msg WxMessage) WxResponse {
 	case "subscribe":
 		// 发送欢迎消息和主菜单
 		session := getUserSession(msg.FromUserName)
-		content = "欢迎关注！\n\n" + generateMenuText(session.CurrentMenu)
+		content = fmt.Sprintf("【欢迎关注筑梦恒心】\n\n回复数字获取服务：\n1️⃣ 查今日黄历\n2️⃣ 添加生日提醒\n3️⃣ 查看帮助手册\n\n🌟 输入任意日期（如\"2024-10-1\"）立即查询\n🎂 输入\"生日+名字+日期\"快速添加提醒\n\n%s", generateMenuText(session.CurrentMenu))
 	case "unsubscribe":
 		// 清理用户会话
 		delete(userSessions, msg.FromUserName)
