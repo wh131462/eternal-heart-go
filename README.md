@@ -1,31 +1,39 @@
 # eternal-heart-go
-作为go的实践项目,EH架构的核心接口和内容都从此服务提供.
+EH架构的的核心后台代码,支持微信公众号系列接口,全平台的用户管理,权限服务管理,应用服务管理.
 
+## ToDo
+微信公众号部分
+- [x] 整体菜单逻辑
+- [x] 黄历查看
+- [x] 复读机模式
+- [ ] 生日管理
+- [ ] AI api-key管理
+用户管理
+- [ ] 用户表建立维护
+- [ ] 登录注册校验模块
+权限管理
+- [ ] [openfga](https://github.com/openfga/openfga)对接
+博客管理
+- [ ] blog manager
+- [ ] website manager
 ## dev
-先构建本地镜像:
+构建本地镜像(暂时不用):
 ```shell
 docker build -t eh-go-server:latest .
 ```
-上传到服务端,执行:
-```shell
-docker run -d -p 9999:9999 --name eh-go-server eh-go-server:latest
-```
 
-验证运行:
-```shell
-curl http://localhost:9999/wx
-```
-
-打包,构建本地镜像并打标签:
+打包,使用build x构建多平台(当前为单个平台)本地镜像并打标签:
 ```shell
 docker buildx build --platform linux/amd64 -t eh-go-server:latest . --load
 ```
-
 保存到tar文件:
 ```shell
 docker save -o eh-go-server.tar eh-go-server:latest
 ```
-
+删除服务器中的镜像:
+```shell
+docker rm -f  eh-go-server
+```
 加载镜像(需要先上传到服务器):
 ```shell
 docker load -i /workspace/go/eh-go-server.tar
@@ -35,7 +43,7 @@ docker load -i /workspace/go/eh-go-server.tar
 docker run -d --name eh-go-server -p 9999:9999 eh-go-server:latest
 ```
 
-### 多平台构建
+### 多平台构建细节
 
 ```shell
 # 启用 buildx 并创建多平台构建器
