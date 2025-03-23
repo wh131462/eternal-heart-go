@@ -5,6 +5,7 @@ import (
 	"eh_go/controller/wechat/menu/dispatch"
 	"eh_go/controller/wechat/menu/path/manager"
 	"eh_go/controller/wechat/menu/sessions"
+	"eh_go/controller/wechat/server_menu"
 	"fmt"
 	"io"
 	"log"
@@ -121,6 +122,9 @@ func handleEventMessage(msg WxMessage) WxResponse {
 		// 清理用户会话
 		sessions.DeleteUserSession(msg.FromUserName)
 		content = "感谢使用，期待再次相见！"
+	case "CLICK":
+		// 处理菜单点击事件
+		content = server_menu.HandleServerMenuClick(msg.FromUserName, msg.EventKey)
 	default:
 		content = "暂不支持的事件类型"
 	}

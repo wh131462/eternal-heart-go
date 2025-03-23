@@ -41,6 +41,8 @@ docker load -i /workspace/go/eh-go-server.tar
 运行即可:
 ```shell
 docker run -d --name eh-go-server -p 9999:9999 eh-go-server:latest
+# 自动删除
+docker run --rm -d --name eh-go-server -p 9999:9999 eh-go-server:latest
 ```
 
 ### 多平台构建细节
@@ -77,4 +79,9 @@ docker pull eternalheart/eh-go-server:latest
 # 运行容器
 docker run -d -p 9999:9999 --name eh-go-server eternalheart/eh-go-server:latest
 ```
-
+查看运行日志:
+```shell
+docker logs -f eh-go-server
+```
+## config
+配置在config中,根据`config.example.go`来提供你的隐私秘钥.

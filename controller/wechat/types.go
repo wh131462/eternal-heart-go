@@ -12,6 +12,13 @@ type WxMessage struct {
 	MsgId        int64  `xml:"MsgId"`
 	Event        string `xml:"Event"`
 	Idx          string `xml:"Idx"`
+
+	// 事件相关字段
+	EventKey  string `xml:"EventKey"`
+	Ticket    string `xml:"Ticket"`
+	Latitude  string `xml:"Latitude"`
+	Longitude string `xml:"Longitude"`
+	Precision string `xml:"Precision"`
 }
 
 // WxResponse 微信响应消息结构体
